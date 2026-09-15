@@ -209,6 +209,46 @@
       color: #7f1d1d;
       margin: 0;
     }
+    .search-box {
+      display: flex;
+      align-items: center;
+      background: rgba(255,255,255,0.2);
+      border-radius: 20px;
+      padding: 6px 12px;
+      margin: 0 8px;
+    }
+    .search-box input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #fff;
+      font-size: 13px;
+      placeholder: #fff;
+    }
+    .search-box input::placeholder {
+      color: rgba(255,255,255,0.7);
+    }
+    .search-box .search-icon {
+      font-size: 14px;
+      margin-right: 6px;
+    }
+    .category-item.active {
+      background: var(--primary);
+      color: #fff;
+    }
+    .category-item.active .name {
+      color: #fff;
+    }
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+    }
+    .empty-state .icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+    }
     footer {
       background: var(--bg-alt);
       padding: 24px 16px 32px;
@@ -230,7 +270,10 @@
 <body>
   <header class="topbar">
     <div class="topbar-city"><span>🌸 林燕心语</span></div>
-    <div class="topbar-search" style="flex:1;"></div>
+    <div class="search-box" style="flex:1;">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="搜索文章、关键词..." />
+    </div>
   </header>
 
   <div class="hero">
@@ -261,39 +304,43 @@
 
   <div class="section">
     <h2 class="section-title">📂 分类导航</h2>
-    <div class="category-grid">
-      <a href="#communication" class="category-item">
+    <div class="category-grid" id="categoryGrid">
+      <div class="category-item active" data-cat="all">
+        <div class="icon">📋</div>
+        <div class="name">全部</div>
+      </div>
+      <div class="category-item" data-cat="communication">
         <div class="icon">💬</div>
         <div class="name">亲子沟通</div>
-      </a>
-      <a href="#adolescence" class="category-item">
+      </div>
+      <div class="category-item" data-cat="adolescence">
         <div class="icon">🌱</div>
         <div class="name">青春期</div>
-      </a>
-      <a href="#learning" class="category-item">
+      </div>
+      <div class="category-item" data-cat="learning">
         <div class="icon">📚</div>
         <div class="name">学习动力</div>
-      </a>
-      <a href="#emotion" class="category-item">
+      </div>
+      <div class="category-item" data-cat="emotion">
         <div class="icon">😊</div>
         <div class="name">情绪管理</div>
-      </a>
-      <a href="#digital" class="category-item">
+      </div>
+      <div class="category-item" data-cat="digital">
         <div class="icon">📱</div>
         <div class="name">手机沉迷</div>
-      </a>
-      <a href="#family" class="category-item">
+      </div>
+      <div class="category-item" data-cat="family">
         <div class="icon">🏠</div>
         <div class="name">家庭教育</div>
-      </a>
-      <a href="#special" class="category-item">
+      </div>
+      <div class="category-item" data-cat="special">
         <div class="icon">⚠️</div>
         <div class="name">特殊问题</div>
-      </a>
-      <a href="#growth" class="category-item">
+      </div>
+      <div class="category-item" data-cat="growth">
         <div class="icon">🌳</div>
         <div class="name">心理成长</div>
-      </a>
+      </div>
     </div>
   </div>
 
@@ -317,8 +364,8 @@
 
   <div class="section" style="padding-top:0;">
     <h2 class="section-title">📝 最新文章</h2>
-    <div class="article-list">
-      <a href="articles.html" class="article-card">
+    <div class="article-list" id="articleList">
+      <a href="articles.html" class="article-card" data-cat="communication" data-title="青春期孩子怎么沟通？15年一线教师总结的5个方法">
         <h3 class="title">青春期孩子怎么沟通？15年一线教师总结的5个方法</h3>
         <p class="desc">青春期孩子自我意识增强，情绪波动大，很多家长不知道怎么和孩子沟通。本文总结了5个实用方法，帮助家长建立良好的亲子沟通。</p>
         <div class="meta">
@@ -326,7 +373,7 @@
           <span>2026-09-15</span>
         </div>
       </a>
-      <a href="articles.html" class="article-card">
+      <a href="articles.html" class="article-card" data-cat="learning" data-title="孩子厌学怎么办？不是懒惰，是这5个深层原因">
         <h3 class="title">孩子厌学怎么办？不是懒惰，是这5个深层原因</h3>
         <p class="desc">孩子不想上学，很多家长第一反应是"懒"，但实际上厌学背后往往有深层原因。本文分析了5种常见原因及应对方法。</p>
         <div class="meta">
@@ -334,7 +381,7 @@
           <span>2026-09-14</span>
         </div>
       </a>
-      <a href="articles.html" class="article-card">
+      <a href="articles.html" class="article-card" data-cat="emotion" data-title="孩子情绪失控怎么办？情绪管理五步法，家长必学">
         <h3 class="title">孩子情绪失控怎么办？情绪管理五步法，家长必学</h3>
         <p class="desc">孩子发脾气、情绪失控是很多家长头疼的问题。本文介绍了情绪管理五步法，帮助家长和孩子都学会情绪调节。</p>
         <div class="meta">
@@ -342,7 +389,7 @@
           <span>2026-09-13</span>
         </div>
       </a>
-      <a href="articles.html" class="article-card">
+      <a href="articles.html" class="article-card" data-cat="digital" data-title="孩子沉迷手机怎么办？不要一刀切，试试这7个方法">
         <h3 class="title">孩子沉迷手机怎么办？不要一刀切，试试这7个方法</h3>
         <p class="desc">手机沉迷是当今家庭教育的一大难题。粗暴禁止往往适得其反，本文介绍了7个循序渐进的方法，帮助孩子合理使用手机。</p>
         <div class="meta">
@@ -350,6 +397,42 @@
           <span>2026-09-12</span>
         </div>
       </a>
+      <a href="articles.html" class="article-card" data-cat="adolescence" data-title="孩子叛逆怎么办？应对叛逆期的7个原则">
+        <h3 class="title">孩子叛逆怎么办？应对叛逆期的7个原则</h3>
+        <p class="desc">叛逆是孩子自我意识觉醒的表现，不是坏事。本文介绍了应对叛逆期的7个原则，帮助家长顺利度过这个阶段。</p>
+        <div class="meta">
+          <span>🌱 青春期</span>
+          <span>2026-09-11</span>
+        </div>
+      </a>
+      <a href="articles.html" class="article-card" data-cat="family" data-title="家庭教育的核心是家长的自我成长">
+        <h3 class="title">家庭教育的核心是家长的自我成长</h3>
+        <p class="desc">教育不是灌输，而是点燃火焰。你想要孩子成为什么样的人，你自己先成为那样的人。本文分享家庭教育的核心理念。</p>
+        <div class="meta">
+          <span>🏠 家庭教育</span>
+          <span>2026-09-10</span>
+        </div>
+      </a>
+      <a href="articles.html" class="article-card" data-cat="special" data-title="孩子被校园欺凌怎么办？识别信号与应对方法">
+        <h3 class="title">孩子被校园欺凌怎么办？识别信号与应对方法</h3>
+        <p class="desc">校园欺凌会对孩子造成严重的心理创伤。本文介绍了校园欺凌的识别信号和家长的应对方法，帮助家长保护孩子。</p>
+        <div class="meta">
+          <span>⚠️ 特殊问题</span>
+          <span>2026-09-09</span>
+        </div>
+      </a>
+      <a href="articles.html" class="article-card" data-cat="growth" data-title="如何培养高情商孩子？情绪智力培养全攻略">
+        <h3 class="title">如何培养高情商孩子？情绪智力培养全攻略</h3>
+        <p class="desc">情商比智商更能预测孩子未来的成功。本文介绍了情绪智力的5个方面和培养方法，帮助家长培养高情商孩子。</p>
+        <div class="meta">
+          <span>🌳 心理成长</span>
+          <span>2026-09-08</span>
+        </div>
+      </a>
+    </div>
+    <div class="empty-state" id="emptyState" style="display:none;">
+      <div class="icon">🔍</div>
+      <p>没有找到相关文章，换个关键词试试吧</p>
     </div>
   </div>
 
@@ -365,6 +448,66 @@
     <p style="margin-top:12px;color:var(--text-muted);">© 2026 林燕心语 版权所有</p>
   </footer>
 
-  <script src="js/app.js"></script>
+  <script>
+    // 分类筛选
+    const categoryItems = document.querySelectorAll('.category-item');
+    const articleCards = document.querySelectorAll('.article-card');
+    const emptyState = document.getElementById('emptyState');
+    const searchInput = document.getElementById('searchInput');
+
+    let currentCategory = 'all';
+    let currentSearch = '';
+
+    function filterArticles() {
+      let visibleCount = 0;
+      articleCards.forEach(card => {
+        const cat = card.dataset.cat;
+        const title = card.dataset.title || '';
+        const desc = card.querySelector('.desc')?.textContent || '';
+        const searchText = (title + ' ' + desc).toLowerCase();
+
+        const matchCategory = currentCategory === 'all' || cat === currentCategory;
+        const matchSearch = currentSearch === '' || searchText.includes(currentSearch.toLowerCase());
+
+        if (matchCategory && matchSearch) {
+          card.style.display = 'block';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+      emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+    }
+
+    // 分类点击事件
+    categoryItems.forEach(item => {
+      item.addEventListener('click', () => {
+        categoryItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        currentCategory = item.dataset.cat;
+        filterArticles();
+        // 滚动到文章列表
+        document.getElementById('articleList').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    // 搜索事件
+    searchInput.addEventListener('input', (e) => {
+      currentSearch = e.target.value.trim();
+      filterArticles();
+    });
+
+    // 关键词标签点击搜索
+    document.querySelectorAll('.keyword-tag').forEach(tag => {
+      tag.addEventListener('click', (e) => {
+        e.preventDefault();
+        const keyword = tag.textContent.trim().split(' ')[0];
+        searchInput.value = keyword;
+        currentSearch = keyword;
+        filterArticles();
+        document.getElementById('articleList').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+  </script>
 </body>
 </html>
