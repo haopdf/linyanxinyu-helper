@@ -1,0 +1,30 @@
+{
+  "name": "linyanxinyu-helper",
+  "version": "1.0.0",
+  "description": "林燕心语 —— 青春期心理与家庭教育知识库，杭州一线初中教师林燕的育儿心得分享",
+  "main": "check-links.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/haopdf/linyanxinyu-helper.git"
+  },
+  "keywords": ["青春期", "家庭教育", "亲子沟通", "心理健康", "育儿"],
+  "author": "林燕",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/haopdf/linyanxinyu-helper/issues"
+  },
+  "homepage": "https://github.com/haopdf/linyanxinyu-helper#readme",
+  "dependencies": {
+    "@vercel/blob": "^2.8.0",
+    "body-parser": "^2.3.0",
+    "express": "^5.2.1",
+    "micro": "^10.0.1",
+    "serverless-http": "^4.0.0"
+  }
+}

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>林燕心语 · 青春期心理与家庭教育</title>
+  <meta name="description" content="林燕心语，杭州一线初中教师林燕的育儿心得分享。专注青春期心理、亲子沟通、学习动力、情绪管理，帮助家长理解孩子、陪伴成长。">
+  <meta name="keywords" content="青春期,家庭教育,亲子沟通,厌学,情绪管理,学习动力,手机沉迷,林燕心语">
+  <meta name="theme-color" content="#f97316">
+  <meta property="og:title" content="林燕心语 · 青春期心理与家庭教育">
+  <meta property="og:description" content="杭州一线初中教师林燕的育儿心得分享，专注青春期心理与家庭教育。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="css/style.css?v=20260915">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌸</text></svg>">
+  <style>
+    .hero {
+      background: linear-gradient(135deg, #f97316 0%, #fb923c 50%, #fbbf24 100%);
+      color: #fff;
+      padding: 32px 20px 40px;
+      text-align: center;
+    }
+    .hero h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin: 0 0 8px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .hero .subtitle {
+      font-size: 14px;
+      opacity: 0.95;
+      margin: 0 0 16px;
+      line-height: 1.6;
+    }
+    .hero .avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: #fff;
+      margin: 0 auto 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .hero-tags span {
+      background: rgba(255,255,255,0.25);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      backdrop-filter: blur(4px);
+    }
+    .section {
+      padding: 20px 16px;
+    }
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      margin: 0 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-title::before {
+      content: '';
+      width: 4px;
+      height: 20px;
+      background: var(--primary);
+      border-radius: 2px;
+    }
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .category-item {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: 16px 8px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      text-decoration: none;
+      color: var(--text);
+      transition: transform 0.2s;
+    }
+    .category-item:active {
+      transform: scale(0.96);
+    }
+    .category-item .icon {
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+    .category-item .name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .keyword-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .keyword-tag {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 8px 16px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      box-shadow: var(--shadow);
+      transition: all 0.2s;
+    }
+    .keyword-tag:active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    .keyword-tag .count {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-left: 4px;
+    }
+    .article-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .article-card {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow);
+      text-decoration: none;
+      color: var(--text);
+      display: block;
+    }
+    .article-card .title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      margin: 0 0 8px;
+      line-height: 1.5;
+    }
+    .article-card .desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin: 0 0 10px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .article-card .meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .about-card {
+      background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin: 0 16px 20px;
+      border: 1px solid #fde68a;
+    }
+    .about-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #92400e;
+      margin: 0 0 10px;
+    }
+    .about-card p {
+      font-size: 13px;
+      color: #78350f;
+      line-height: 1.8;
+      margin: 0 0 8px;
+    }
+    .hotline-card {
+      background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin: 0 16px 20px;
+      border: 1px solid #fecaca;
+    }
+    .hotline-card h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #991b1b;
+      margin: 0 0 8px;
+    }
+    .hotline-card .phone {
+      font-size: 20px;
+      font-weight: 700;
+      color: #dc2626;
+      margin: 4px 0;
+    }
+    .hotline-card p {
+      font-size: 12px;
+      color: #7f1d1d;
+      margin: 0;
+    }
+    footer {
+      background: var(--bg-alt);
+      padding: 24px 16px 32px;
+      text-align: center;
+      border-top: 1px solid var(--border-light);
+    }
+    footer p {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin: 4px 0;
+      line-height: 1.6;
+    }
+    footer a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-city"><span>🌸 林燕心语</span></div>
+    <div class="topbar-search" style="flex:1;"></div>
+  </header>
+
+  <div class="hero">
+    <div class="avatar">👩‍🏫</div>
+    <h1>林燕心语</h1>
+    <p class="subtitle">杭州一线初中教师 · 专注青春期心理与家庭教育<br>用专业和温度，陪伴每一个家庭成长</p>
+    <div class="hero-tags">
+      <span>🌱 青春期心理</span>
+      <span>💬 亲子沟通</span>
+      <span>📚 学习动力</span>
+      <span>😊 情绪管理</span>
+    </div>
+  </div>
+
+  <div class="about-card">
+    <h3>👋 关于林燕</h3>
+    <p>我是林燕，杭州一线初中教师，从教15年，接触过上千个青春期孩子和家庭。</p>
+    <p>在这里，我会分享真实的教育案例、实用的沟通方法、专业的心理知识。希望每一位家长都能找到适合自己孩子的教育方式。</p>
+    <p style="margin-top:8px;"><strong>教育理念：</strong>先懂孩子，再谈教育；关系先于教育，身教重于言传。</p>
+  </div>
+
+  <div class="hotline-card">
+    <h3>🆘 心理援助热线</h3>
+    <p>如果您或孩子正在经历心理危机，请及时寻求专业帮助：</p>
+    <div class="phone">400-161-9995</div>
+    <p>全国心理援助热线 · 24小时免费</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">📂 分类导航</h2>
+    <div class="category-grid">
+      <a href="#communication" class="category-item">
+        <div class="icon">💬</div>
+        <div class="name">亲子沟通</div>
+      </a>
+      <a href="#adolescence" class="category-item">
+        <div class="icon">🌱</div>
+        <div class="name">青春期</div>
+      </a>
+      <a href="#learning" class="category-item">
+        <div class="icon">📚</div>
+        <div class="name">学习动力</div>
+      </a>
+      <a href="#emotion" class="category-item">
+        <div class="icon">😊</div>
+        <div class="name">情绪管理</div>
+      </a>
+      <a href="#digital" class="category-item">
+        <div class="icon">📱</div>
+        <div class="name">手机沉迷</div>
+      </a>
+      <a href="#family" class="category-item">
+        <div class="icon">🏠</div>
+        <div class="name">家庭教育</div>
+      </a>
+      <a href="#special" class="category-item">
+        <div class="icon">⚠️</div>
+        <div class="name">特殊问题</div>
+      </a>
+      <a href="#growth" class="category-item">
+        <div class="icon">🌳</div>
+        <div class="name">心理成长</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="section" style="padding-top:0;">
+    <h2 class="section-title">🔍 热门关键词</h2>
+    <div class="keyword-list">
+      <a href="#" class="keyword-tag">青春期 <span class="count">156</span></a>
+      <a href="#" class="keyword-tag">厌学 <span class="count">142</span></a>
+      <a href="#" class="keyword-tag">亲子沟通 <span class="count">128</span></a>
+      <a href="#" class="keyword-tag">手机沉迷 <span class="count">115</span></a>
+      <a href="#" class="keyword-tag">学习动力 <span class="count">98</span></a>
+      <a href="#" class="keyword-tag">情绪管理 <span class="count">87</span></a>
+      <a href="#" class="keyword-tag">叛逆 <span class="count">76</span></a>
+      <a href="#" class="keyword-tag">考试焦虑 <span class="count">65</span></a>
+      <a href="#" class="keyword-tag">自卑 <span class="count">54</span></a>
+      <a href="#" class="keyword-tag">早恋 <span class="count">43</span></a>
+      <a href="#" class="keyword-tag">家庭教育 <span class="count">32</span></a>
+      <a href="#" class="keyword-tag">父母关系 <span class="count">21</span></a>
+    </div>
+  </div>
+
+  <div class="section" style="padding-top:0;">
+    <h2 class="section-title">📝 最新文章</h2>
+    <div class="article-list">
+      <a href="articles.html" class="article-card">
+        <h3 class="title">青春期孩子怎么沟通？15年一线教师总结的5个方法</h3>
+        <p class="desc">青春期孩子自我意识增强，情绪波动大，很多家长不知道怎么和孩子沟通。本文总结了5个实用方法，帮助家长建立良好的亲子沟通。</p>
+        <div class="meta">
+          <span>💬 亲子沟通</span>
+          <span>2026-09-15</span>
+        </div>
+      </a>
+      <a href="articles.html" class="article-card">
+        <h3 class="title">孩子厌学怎么办？不是懒惰，是这5个深层原因</h3>
+        <p class="desc">孩子不想上学，很多家长第一反应是"懒"，但实际上厌学背后往往有深层原因。本文分析了5种常见原因及应对方法。</p>
+        <div class="meta">
+          <span>📚 学习动力</span>
+          <span>2026-09-14</span>
+        </div>
+      </a>
+      <a href="articles.html" class="article-card">
+        <h3 class="title">孩子情绪失控怎么办？情绪管理五步法，家长必学</h3>
+        <p class="desc">孩子发脾气、情绪失控是很多家长头疼的问题。本文介绍了情绪管理五步法，帮助家长和孩子都学会情绪调节。</p>
+        <div class="meta">
+          <span>😊 情绪管理</span>
+          <span>2026-09-13</span>
+        </div>
+      </a>
+      <a href="articles.html" class="article-card">
+        <h3 class="title">孩子沉迷手机怎么办？不要一刀切，试试这7个方法</h3>
+        <p class="desc">手机沉迷是当今家庭教育的一大难题。粗暴禁止往往适得其反，本文介绍了7个循序渐进的方法，帮助孩子合理使用手机。</p>
+        <div class="meta">
+          <span>📱 手机沉迷</span>
+          <span>2026-09-12</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <footer>
+    <p>🌸 林燕心语 · 青春期心理与家庭教育</p>
+    <p>杭州一线初中教师林燕的育儿心得分享</p>
+    <p>公众号：林燕心语 | 商务合作：linyanxinyu@163.com</p>
+    <p style="margin-top:8px;">
+      <a href="articles.html">文章合集</a> · 
+      <a href="#">关于我</a> · 
+      <a href="#">联系我们</a>
+    </p>
+    <p style="margin-top:12px;color:var(--text-muted);">© 2026 林燕心语 版权所有</p>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
