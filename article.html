@@ -491,6 +491,76 @@
       color: #fff;
       text-decoration: none;
     }
+
+    /* 搜索建议下拉列表 */
+    .search-suggestions {
+      position: absolute;
+      top: 100%;
+      left: 8px;
+      right: 8px;
+      background: var(--bg-card);
+      border-radius: 0 0 12px 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      z-index: 1000;
+      display: none;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+    .search-suggestions.active {
+      display: block;
+    }
+    .search-suggestion-item {
+      padding: 10px 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: background 0.15s;
+      border-bottom: 1px solid var(--border);
+    }
+    .search-suggestion-item:last-child {
+      border-bottom: none;
+    }
+    .search-suggestion-item:hover,
+    .search-suggestion-item.active {
+      background: var(--bg);
+    }
+    .search-suggestion-item .icon {
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    .search-suggestion-item .text {
+      flex: 1;
+      font-size: 14px;
+      color: var(--text-primary);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .search-suggestion-item .text mark {
+      background: rgba(249, 115, 22, 0.2);
+      color: var(--primary);
+      padding: 0 2px;
+      border-radius: 2px;
+    }
+    .search-suggestion-item .type {
+      font-size: 11px;
+      color: var(--text-muted);
+      background: var(--bg);
+      padding: 2px 6px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+    .search-suggestions .empty {
+      padding: 16px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+    .search-wrapper {
+      position: relative;
+      flex: 1;
+    }
   </style>
 </head>
 <body>
@@ -499,9 +569,12 @@
 
   <header class="topbar">
     <a href="index.html" class="topbar-logo">🌸 林燕心语</a>
-    <div class="search-box" style="flex:1;">
-      <span class="search-icon">🔍</span>
-      <input type="text" id="searchInput" placeholder="搜索文章..." onkeydown="if(event.key==='Enter'){window.location.href='articles.html?search='+encodeURIComponent(this.value)}" />
+    <div class="search-wrapper">
+      <div class="search-box" style="flex:1;">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="搜索文章、关键词..." autocomplete="off" />
+      </div>
+      <div class="search-suggestions" id="searchSuggestions"></div>
     </div>
   </header>
 
@@ -525,7 +598,7 @@
     <p>杭州一线初中教师林燕的育儿心得分享</p>
     <p>公众号：林燕心语 | 商务合作：linyanxinyu@163.com</p>
     <p style="margin-top:8px;">
-      <a href="articles.html">文章合集</a> ·
+      <a href="articles.html">文章合集</a> · 
       <a href="#" onclick="openMessageModal(); return false;">💬 联系我们/留言</a>
     </p>
     <p style="margin-top:12px;color:var(--text-muted);">© 2026 林燕心语 版权所有</p>
@@ -873,6 +946,170 @@
         submitBtn.textContent = '提交留言';
       }
     }
+
+    // 搜索建议功能
+    const searchInput = document.getElementById('searchInput');
+    const hotKeywords = ['青春期', '厌学', '亲子沟通', '手机沉迷', '学习动力', '情绪管理', '叛逆', '考试焦虑', '自卑', '早恋', '家庭教育', '父母关系', '校园欺凌', '抑郁', '高情商', '自我成长'];
+    let activeSuggestionIndex = -1;
+
+    // 文章标题列表（从文章数据中获取）
+    let articleTitles = [];
+    async function loadArticleTitles() {
+      try {
+        const res = await fetch('data/articles.json');
+        const data = await res.json();
+        articleTitles = data.articles.map(a => ({ title: a.title, category: a.category }));
+      } catch (e) {
+        articleTitles = [];
+      }
+    }
+    loadArticleTitles();
+
+    const categoryNames = {
+      communication: '亲子沟通', adolescence: '青春期', learning: '学习动力',
+      emotion: '情绪管理', digital: '手机沉迷', family: '家庭教育',
+      special: '特殊问题', growth: '心理成长'
+    };
+
+    // 显示搜索建议
+    function showSearchSuggestions(query) {
+      const suggestionsEl = document.getElementById('searchSuggestions');
+      if (!query) {
+        suggestionsEl.classList.remove('active');
+        suggestionsEl.innerHTML = '';
+        activeSuggestionIndex = -1;
+        return;
+      }
+
+      const queryLower = query.toLowerCase();
+      const suggestions = [];
+
+      // 匹配热门关键词
+      hotKeywords.forEach(kw => {
+        if (kw.toLowerCase().includes(queryLower)) {
+          suggestions.push({ type: '关键词', text: kw, icon: '🔥' });
+        }
+      });
+
+      // 匹配文章标题
+      articleTitles.forEach(article => {
+        if (article.title.toLowerCase().includes(queryLower)) {
+          suggestions.push({ type: categoryNames[article.category] || '文章', text: article.title, icon: '📄' });
+        }
+      });
+
+      // 去重并限制数量
+      const uniqueSuggestions = [];
+      const seen = new Set();
+      suggestions.forEach(s => {
+        if (!seen.has(s.text)) {
+          seen.add(s.text);
+          uniqueSuggestions.push(s);
+        }
+      });
+      const limitedSuggestions = uniqueSuggestions.slice(0, 8);
+
+      if (limitedSuggestions.length === 0) {
+        suggestionsEl.innerHTML = '<div class="empty">没有找到相关建议，按回车搜索</div>';
+      } else {
+        suggestionsEl.innerHTML = limitedSuggestions.map((s, i) => `
+          <div class="search-suggestion-item" data-index="${i}" data-text="${s.text}">
+            <span class="icon">${s.icon}</span>
+            <span class="text">${highlightMatch(s.text, query)}</span>
+            <span class="type">${s.type}</span>
+          </div>
+        `).join('');
+
+        // 绑定点击事件
+        suggestionsEl.querySelectorAll('.search-suggestion-item').forEach(item => {
+          item.addEventListener('click', () => {
+            const text = item.dataset.text;
+            searchInput.value = text;
+            window.location.href = `articles.html?search=${encodeURIComponent(text)}`;
+          });
+        });
+      }
+
+      suggestionsEl.classList.add('active');
+      activeSuggestionIndex = -1;
+    }
+
+    // 高亮匹配文字
+    function highlightMatch(text, query) {
+      const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+      return text.replace(regex, '<mark>$1</mark>');
+    }
+
+    // 隐藏搜索建议
+    function hideSearchSuggestions() {
+      const suggestionsEl = document.getElementById('searchSuggestions');
+      if (suggestionsEl) {
+        suggestionsEl.classList.remove('active');
+      }
+      activeSuggestionIndex = -1;
+    }
+
+    // 搜索输入事件
+    searchInput.addEventListener('input', (e) => {
+      showSearchSuggestions(e.target.value.trim());
+    });
+
+    // 键盘导航
+    searchInput.addEventListener('keydown', (e) => {
+      const suggestionsEl = document.getElementById('searchSuggestions');
+      const items = suggestionsEl.querySelectorAll('.search-suggestion-item');
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (items.length > 0) {
+          activeSuggestionIndex = (activeSuggestionIndex + 1) % items.length;
+          updateActiveSuggestion(items);
+        }
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (items.length > 0) {
+          activeSuggestionIndex = activeSuggestionIndex <= 0 ? items.length - 1 : activeSuggestionIndex - 1;
+          updateActiveSuggestion(items);
+        }
+      } else if (e.key === 'Enter') {
+        if (activeSuggestionIndex >= 0 && items[activeSuggestionIndex]) {
+          e.preventDefault();
+          items[activeSuggestionIndex].click();
+        } else {
+          const text = searchInput.value.trim();
+          if (text) {
+            window.location.href = `articles.html?search=${encodeURIComponent(text)}`;
+          }
+        }
+      } else if (e.key === 'Escape') {
+        hideSearchSuggestions();
+      }
+    });
+
+    function updateActiveSuggestion(items) {
+      items.forEach((item, i) => {
+        if (i === activeSuggestionIndex) {
+          item.classList.add('active');
+          searchInput.value = item.dataset.text;
+        } else {
+          item.classList.remove('active');
+        }
+      });
+    }
+
+    // 点击页面其他地方隐藏搜索建议
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.search-wrapper')) {
+        hideSearchSuggestions();
+      }
+    });
+
+    // 搜索框获得焦点时显示建议（如果有内容）
+    searchInput.addEventListener('focus', () => {
+      if (searchInput.value.trim()) {
+        showSearchSuggestions(searchInput.value.trim());
+      }
+    });
   </script>
 </body>
 </html>
