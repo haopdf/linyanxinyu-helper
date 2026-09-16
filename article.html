@@ -11,6 +11,9 @@
   <meta property="og:type" content="article" />
   <link rel="stylesheet" href="css/style.css" />
   <style>
+    body {
+      padding-bottom: 0;
+    }
     /* 阅读进度条 */
     .reading-progress {
       position: fixed;
@@ -984,12 +987,6 @@
       }
     }
     loadArticleTitles();
-
-    const categoryNames = {
-      communication: '亲子沟通', adolescence: '青春期', learning: '学习动力',
-      emotion: '情绪管理', digital: '手机沉迷', family: '家庭教育',
-      special: '特殊问题', growth: '心理成长'
-    };
 
     // 显示搜索建议
     function showSearchSuggestions(query) {
