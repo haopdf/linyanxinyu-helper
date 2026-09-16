@@ -561,6 +561,25 @@
       position: relative;
       flex: 1;
     }
+    .search-box .search-clear {
+      font-size: 18px;
+      color: rgba(255,255,255,0.8);
+      cursor: pointer;
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      transition: all 0.2s;
+      line-height: 1;
+    }
+    .search-box .search-clear:hover {
+      background: rgba(255,255,255,0.35);
+      color: #fff;
+    }
   </style>
 </head>
 <body>
@@ -573,6 +592,7 @@
       <div class="search-box" style="flex:1;">
         <span class="search-icon">🔍</span>
         <input type="text" id="searchInput" placeholder="搜索文章、关键词..." autocomplete="off" />
+        <span class="search-clear" id="searchClear" style="display:none;">×</span>
       </div>
       <div class="search-suggestions" id="searchSuggestions"></div>
     </div>
@@ -1051,8 +1071,25 @@
 
     // 搜索输入事件
     searchInput.addEventListener('input', (e) => {
-      showSearchSuggestions(e.target.value.trim());
+      const value = e.target.value.trim();
+      showSearchSuggestions(value);
+      // 显示/隐藏清除按钮
+      const clearBtn = document.getElementById('searchClear');
+      if (clearBtn) {
+        clearBtn.style.display = value ? 'flex' : 'none';
+      }
     });
+
+    // 清除按钮点击事件
+    const searchClearBtn = document.getElementById('searchClear');
+    if (searchClearBtn) {
+      searchClearBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        hideSearchSuggestions();
+        searchClearBtn.style.display = 'none';
+        searchInput.focus();
+      });
+    }
 
     // 键盘导航
     searchInput.addEventListener('keydown', (e) => {
