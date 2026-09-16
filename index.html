@@ -232,6 +232,126 @@
       font-size: 11px;
       color: #a8a29e;
     }
+    .message-section {
+      margin: 0 16px 20px;
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+    .message-section h3 {
+      margin: 0 0 16px 0;
+      font-size: 18px;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .message-form {
+      margin-bottom: 20px;
+    }
+    .message-form input,
+    .message-form textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: inherit;
+    }
+    .message-form input:focus,
+    .message-form textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .message-form textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+    .message-form button {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: opacity 0.2s;
+    }
+    .message-form button:hover {
+      opacity: 0.9;
+    }
+    .message-form button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .message-list {
+      border-top: 1px solid var(--border);
+      padding-top: 16px;
+    }
+    .message-item {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .message-item:last-child {
+      border-bottom: none;
+    }
+    .message-item .msg-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .message-item .msg-name {
+      font-weight: 600;
+      color: var(--primary);
+      font-size: 14px;
+    }
+    .message-item .msg-time {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .message-item .msg-content {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin: 0;
+    }
+    .message-empty {
+      text-align: center;
+      padding: 30px 0;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+    .message-loading {
+      text-align: center;
+      padding: 20px 0;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+    .message-success {
+      background: #dcfce7;
+      color: #166534;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      margin-bottom: 10px;
+      display: none;
+    }
+    .message-error {
+      background: #fee2e2;
+      color: #991b1b;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      margin-bottom: 10px;
+      display: none;
+    }
     .search-box {
       display: flex;
       align-items: center;
@@ -476,6 +596,20 @@
     </div>
   </div>
 
+  <div class="message-section">
+    <h3>💬 留言板</h3>
+    <div class="message-success" id="msgSuccess">留言提交成功！感谢您的分享。</div>
+    <div class="message-error" id="msgError"></div>
+    <form class="message-form" id="messageForm">
+      <input type="text" id="msgName" placeholder="您的昵称（选填，默认匿名家长）" maxlength="20" />
+      <textarea id="msgContent" placeholder="分享您的育儿心得、困惑或建议..." maxlength="500" required></textarea>
+      <button type="submit" id="msgSubmit">提交留言</button>
+    </form>
+    <div class="message-list" id="messageList">
+      <div class="message-loading">加载留言中...</div>
+    </div>
+  </div>
+
   <footer>
     <p>🌸 林燕心语 · 青春期心理与家庭教育</p>
     <p>杭州一线初中教师林燕的育儿心得分享</p>
@@ -548,6 +682,101 @@
         document.getElementById('articleList').scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     });
+
+    // ========== 留言板功能 ==========
+    const messageForm = document.getElementById('messageForm');
+    const messageList = document.getElementById('messageList');
+    const msgSuccess = document.getElementById('msgSuccess');
+    const msgError = document.getElementById('msgError');
+    const msgSubmit = document.getElementById('msgSubmit');
+
+    // 加载留言列表
+    async function loadMessages() {
+      messageList.innerHTML = '<div class="message-loading">加载留言中...</div>';
+      try {
+        const res = await fetch('/api/messages');
+        const data = await res.json();
+        if (data.success && data.messages && data.messages.length > 0) {
+          messageList.innerHTML = data.messages.map(msg => `
+            <div class="message-item">
+              <div class="msg-header">
+                <span class="msg-name">${escapeHtml(msg.name)}</span>
+                <span class="msg-time">${escapeHtml(msg.time)}</span>
+              </div>
+              <p class="msg-content">${escapeHtml(msg.content)}</p>
+            </div>
+          `).join('');
+        } else {
+          messageList.innerHTML = '<div class="message-empty">还没有留言，来分享第一条吧！</div>';
+        }
+      } catch (e) {
+        messageList.innerHTML = '<div class="message-empty">留言加载失败，请稍后再试</div>';
+      }
+    }
+
+    // HTML 转义，防止 XSS
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // 提交留言
+    messageForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('msgName').value;
+      const content = document.getElementById('msgContent').value;
+
+      if (!content.trim()) {
+        showError('留言内容不能为空');
+        return;
+      }
+
+      msgSubmit.disabled = true;
+      msgSubmit.textContent = '提交中...';
+      hideMessages();
+
+      try {
+        const res = await fetch('/api/messages', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, content })
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          showSuccess();
+          messageForm.reset();
+          loadMessages();
+        } else {
+          showError(data.message || '提交失败，请稍后再试');
+        }
+      } catch (err) {
+        showError('网络错误，请稍后再试');
+      } finally {
+        msgSubmit.disabled = false;
+        msgSubmit.textContent = '提交留言';
+      }
+    });
+
+    function showSuccess() {
+      msgSuccess.style.display = 'block';
+      setTimeout(() => { msgSuccess.style.display = 'none'; }, 3000);
+    }
+
+    function showError(msg) {
+      msgError.textContent = msg;
+      msgError.style.display = 'block';
+      setTimeout(() => { msgError.style.display = 'none'; }, 3000);
+    }
+
+    function hideMessages() {
+      msgSuccess.style.display = 'none';
+      msgError.style.display = 'none';
+    }
+
+    // 页面加载时获取留言
+    loadMessages();
   </script>
 </body>
 </html>

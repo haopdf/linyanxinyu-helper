@@ -13,7 +13,13 @@
     "type": "git",
     "url": "git+https://github.com/haopdf/linyanxinyu-helper.git"
   },
-  "keywords": ["青春期", "家庭教育", "亲子沟通", "心理健康", "育儿"],
+  "keywords": [
+    "青春期",
+    "家庭教育",
+    "亲子沟通",
+    "心理健康",
+    "育儿"
+  ],
   "author": "林燕",
   "license": "ISC",
   "bugs": {
@@ -22,6 +28,7 @@
   "homepage": "https://github.com/haopdf/linyanxinyu-helper#readme",
   "dependencies": {
     "@vercel/blob": "^2.8.0",
+    "@vercel/kv": "^2.0.0",
     "body-parser": "^2.3.0",
     "express": "^5.2.1",
     "micro": "^10.0.1",
