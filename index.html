@@ -185,29 +185,52 @@
       line-height: 1.8;
       margin: 0 0 8px;
     }
-    .hotline-card {
-      background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+    .follow-card {
+      background: linear-gradient(135deg, #fff7ed 0%, #fef3c7 100%);
       border-radius: var(--radius);
-      padding: 16px 20px;
+      padding: 20px;
       margin: 0 16px 20px;
-      border: 1px solid #fecaca;
+      border: 1px solid #fed7aa;
+      text-align: center;
     }
-    .hotline-card h3 {
-      font-size: 15px;
+    .follow-card h3 {
+      font-size: 16px;
       font-weight: 700;
-      color: #991b1b;
+      color: #9a3412;
       margin: 0 0 8px;
     }
-    .hotline-card .phone {
-      font-size: 20px;
-      font-weight: 700;
-      color: #dc2626;
-      margin: 4px 0;
+    .follow-card .qrcode-wrap {
+      background: #fff;
+      border-radius: 12px;
+      padding: 10px;
+      display: inline-block;
+      margin: 10px 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
-    .hotline-card p {
+    .follow-card .qrcode-wrap img {
+      width: 130px;
+      height: 130px;
+      display: block;
+      border-radius: 8px;
+    }
+    .follow-card .account-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: #9a3412;
+      margin: 6px 0 4px;
+    }
+    .follow-card p {
       font-size: 12px;
-      color: #7f1d1d;
-      margin: 0;
+      color: #78716c;
+      margin: 2px 0;
+      line-height: 1.6;
+    }
+    .follow-card .tips {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed #fed7aa;
+      font-size: 11px;
+      color: #a8a29e;
     }
     .search-box {
       display: flex;
@@ -304,11 +327,19 @@
     <p style="margin-top:8px;"><strong>教育理念：</strong>先懂孩子，再谈教育；关系先于教育，身教重于言传。</p>
   </div>
 
-  <div class="hotline-card">
-    <h3>🆘 心理援助热线</h3>
-    <p>如果您或孩子正在经历心理危机，请及时寻求专业帮助：</p>
-    <div class="phone">400-161-9995</div>
-    <p>全国心理援助热线 · 24小时免费</p>
+  <div class="follow-card">
+    <h3>📱 关注公众号</h3>
+    <p>扫码关注「林燕心语」，获取更多青春期心理与家庭教育内容</p>
+    <div class="qrcode-wrap">
+      <img src="images/qrcode.jpg" alt="林燕心语公众号二维码" />
+    </div>
+    <div class="account-name">🌸 林燕心语</div>
+    <p>青春期心理 · 亲子沟通 · 家庭教育</p>
+    <p>杭州一线初中教师 · 从教15年</p>
+    <div class="tips">
+      💡 关注后回复关键词获取专题内容<br/>
+      回复「青春期」「厌学」「亲子沟通」「手机沉迷」等
+    </div>
   </div>
 
   <div class="section">
