@@ -11,11 +11,75 @@
   <meta property="og:type" content="article" />
   <link rel="stylesheet" href="css/style.css" />
   <style>
+    /* 阅读进度条 */
+    .reading-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #f97316, #ec4899);
+      z-index: 1000;
+      transition: width 0.1s ease;
+      width: 0%;
+    }
+
     .article-detail {
       max-width: 720px;
       margin: 0 auto;
       padding: 20px 16px 40px;
     }
+
+    /* 文章封面图 */
+    .article-cover {
+      width: 100%;
+      height: 200px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #f97316 0%, #fb923c 50%, #ec4899 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .article-cover::before {
+      content: '';
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50%;
+      top: -50px;
+      right: -50px;
+    }
+    .article-cover::after {
+      content: '';
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 50%;
+      bottom: -30px;
+      left: -30px;
+    }
+    .article-cover .cover-icon {
+      font-size: 60px;
+      z-index: 1;
+    }
+    .article-cover .cover-category {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      background: rgba(255,255,255,0.25);
+      backdrop-filter: blur(10px);
+      color: #fff;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      z-index: 1;
+    }
+
     .article-header {
       margin-bottom: 24px;
       padding-bottom: 20px;
@@ -34,21 +98,14 @@
       gap: 12px;
       font-size: 13px;
       color: var(--text-muted);
+      align-items: center;
     }
     .article-meta span {
       display: flex;
       align-items: center;
       gap: 4px;
     }
-    .article-category {
-      display: inline-block;
-      background: var(--primary);
-      color: #fff;
-      padding: 2px 10px;
-      border-radius: 12px;
-      font-size: 12px;
-      font-weight: 600;
-    }
+
     .article-content {
       font-size: 16px;
       line-height: 1.8;
@@ -78,6 +135,7 @@
       color: var(--text-secondary);
       font-size: 15px;
     }
+
     .article-tags {
       margin-top: 32px;
       padding-top: 20px;
@@ -93,13 +151,51 @@
       border-radius: 14px;
       font-size: 12px;
     }
+
+    /* 点赞和互动区 */
     .article-actions {
       display: flex;
       gap: 12px;
       margin-top: 24px;
-      padding: 16px;
+      padding: 20px 16px;
       background: var(--bg-card);
       border-radius: var(--radius);
+      align-items: center;
+    }
+    .like-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 24px;
+      border: none;
+      border-radius: 24px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: linear-gradient(135deg, #f97316, #ec4899);
+      color: #fff;
+    }
+    .like-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+    }
+    .like-btn.liked {
+      background: linear-gradient(135deg, #ec4899, #f97316);
+    }
+    .like-btn .like-icon {
+      font-size: 18px;
+      transition: transform 0.3s ease;
+    }
+    .like-btn.liked .like-icon {
+      animation: heartBeat 0.6s ease;
+    }
+    @keyframes heartBeat {
+      0% { transform: scale(1); }
+      25% { transform: scale(1.3); }
+      50% { transform: scale(0.9); }
+      75% { transform: scale(1.2); }
+      100% { transform: scale(1); }
     }
     .action-btn {
       flex: 1;
@@ -110,19 +206,15 @@
       cursor: pointer;
       font-weight: 600;
       transition: opacity 0.2s;
-    }
-    .action-btn:hover {
-      opacity: 0.85;
-    }
-    .action-btn.primary {
-      background: var(--primary);
-      color: #fff;
-    }
-    .action-btn.secondary {
       background: var(--bg);
       color: var(--text-secondary);
       border: 1px solid var(--border);
     }
+    .action-btn:hover {
+      opacity: 0.85;
+    }
+
+    /* 相关文章 */
     .related-articles {
       margin-top: 32px;
     }
@@ -160,6 +252,7 @@
       font-size: 12px;
       color: var(--text-muted);
     }
+
     .back-btn {
       display: inline-flex;
       align-items: center;
@@ -174,6 +267,7 @@
     .back-btn:hover {
       text-decoration: underline;
     }
+
     .loading, .error {
       text-align: center;
       padding: 60px 20px;
@@ -184,6 +278,38 @@
       font-size: 40px;
       margin-bottom: 12px;
     }
+
+    /* 返回顶部按钮 */
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 20px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #f97316, #ec4899);
+      color: #fff;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    .back-to-top:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(249, 115, 22, 0.4);
+    }
+
     .share-tip {
       display: none;
       position: fixed;
@@ -205,6 +331,9 @@
   </style>
 </head>
 <body>
+  <!-- 阅读进度条 -->
+  <div class="reading-progress" id="readingProgress"></div>
+
   <header class="topbar">
     <a href="index.html" class="topbar-logo">🌸 林燕心语</a>
     <div class="search-box" style="flex:1;">
@@ -219,6 +348,9 @@
       <p>文章加载中...</p>
     </div>
   </div>
+
+  <!-- 返回顶部按钮 -->
+  <button class="back-to-top" id="backToTop" onclick="scrollToTop()" title="返回顶部">↑</button>
 
   <div class="share-tip" id="shareTip">
     <div class="arrow">↗️</div>
@@ -253,6 +385,21 @@
       growth: '心理成长'
     };
 
+    // 分类图标映射
+    const categoryIcons = {
+      communication: '💬',
+      adolescence: '🌱',
+      learning: '📚',
+      emotion: '😊',
+      digital: '📱',
+      family: '🏠',
+      special: '⚠️',
+      growth: '🌳'
+    };
+
+    // 当前文章数据
+    let currentArticle = null;
+
     // 加载文章
     async function loadArticle() {
       const container = document.getElementById('articleDetail');
@@ -272,6 +419,8 @@
           return;
         }
 
+        currentArticle = article;
+
         // 更新页面标题和 SEO
         document.title = article.title + ' - 林燕心语';
         document.querySelector('meta[name="description"]').content = article.excerpt;
@@ -283,28 +432,46 @@
           .filter(a => a.category === article.category && a.id !== article.id)
           .slice(0, 3);
 
+        // 检查是否已点赞
+        const liked = localStorage.getItem('liked_' + articleId) === 'true';
+
         // 渲染文章
         container.innerHTML = `
           <a href="javascript:history.back()" class="back-btn">← 返回</a>
+
+          <!-- 文章封面图 -->
+          <div class="article-cover">
+            <span class="cover-category">${categoryIcons[article.category] || '📝'} ${article.categoryName || categoryNames[article.category] || ''}</span>
+            <span class="cover-icon">${categoryIcons[article.category] || '📝'}</span>
+          </div>
+
           <div class="article-header">
             <h1>${escapeHtml(article.title)}</h1>
             <div class="article-meta">
-              <span class="article-category">${article.categoryName || categoryNames[article.category] || ''}</span>
               <span>📅 ${article.date}</span>
               <span>⏱️ ${article.readTime}</span>
-              <span>👁️ ${article.views} 阅读</span>
+              <span>👁️ <span id="viewCount">${article.views}</span> 阅读</span>
             </div>
           </div>
+
           <div class="article-content">
             ${article.content}
           </div>
+
           <div class="article-tags">
             ${(article.tags || []).map(tag => `<span class="tag">#${escapeHtml(tag)}</span>`).join('')}
           </div>
+
+          <!-- 点赞和互动区 -->
           <div class="article-actions">
-            <button class="action-btn primary" onclick="shareArticle()">📤 分享文章</button>
-            <button class="action-btn secondary" onclick="window.location.href='articles.html'">📚 更多文章</button>
+            <button class="like-btn ${liked ? 'liked' : ''}" id="likeBtn" onclick="toggleLike()">
+              <span class="like-icon">${liked ? '❤️' : '🤍'}</span>
+              <span id="likeCount">${liked ? '已点赞' : '点赞'}</span>
+            </button>
+            <button class="action-btn" onclick="shareArticle()">📤 分享</button>
+            <button class="action-btn" onclick="window.location.href='articles.html'">📚 更多</button>
           </div>
+
           ${related.length > 0 ? `
           <div class="related-articles">
             <h3>📖 相关文章</h3>
@@ -319,6 +486,12 @@
           </div>
           ` : ''}
         `;
+
+        // 增加阅读量
+        incrementView();
+        // 获取点赞数
+        loadLikeCount();
+
       } catch (e) {
         console.error('加载文章失败:', e);
         container.innerHTML = '<div class="error"><div class="icon">❌</div><p>文章加载失败，请稍后再试</p><a href="articles.html" class="back-btn">← 返回文章列表</a></div>';
@@ -332,12 +505,102 @@
       return div.innerHTML;
     }
 
+    // 增加阅读量
+    async function incrementView() {
+      try {
+        const res = await fetch('api/view?id=' + articleId, { method: 'POST' });
+        const data = await res.json();
+        if (data.views) {
+          document.getElementById('viewCount').textContent = data.views;
+        }
+      } catch (e) {
+        console.log('阅读量统计失败:', e);
+      }
+    }
+
+    // 加载点赞数
+    async function loadLikeCount() {
+      try {
+        const res = await fetch('api/like?id=' + articleId);
+        const data = await res.json();
+        const liked = localStorage.getItem('liked_' + articleId) === 'true';
+        const likeBtn = document.getElementById('likeBtn');
+        const likeCount = document.getElementById('likeCount');
+        if (liked) {
+          likeCount.textContent = '已点赞 ' + (data.likes || '');
+        } else {
+          likeCount.textContent = '点赞 ' + (data.likes || '');
+        }
+      } catch (e) {
+        console.log('加载点赞数失败:', e);
+      }
+    }
+
+    // 切换点赞
+    async function toggleLike() {
+      const liked = localStorage.getItem('liked_' + articleId) === 'true';
+      const likeBtn = document.getElementById('likeBtn');
+      const likeCount = document.getElementById('likeCount');
+      const likeIcon = likeBtn.querySelector('.like-icon');
+
+      if (liked) {
+        // 取消点赞（前端只取消本地状态，不调用 API 减少）
+        localStorage.removeItem('liked_' + articleId);
+        likeBtn.classList.remove('liked');
+        likeIcon.textContent = '🤍';
+        likeCount.textContent = '点赞';
+        loadLikeCount();
+      } else {
+        // 点赞
+        localStorage.setItem('liked_' + articleId, 'true');
+        likeBtn.classList.add('liked');
+        likeIcon.textContent = '❤️';
+
+        try {
+          const res = await fetch('api/like?id=' + articleId, { method: 'POST' });
+          const data = await res.json();
+          likeCount.textContent = '已点赞 ' + (data.likes || '');
+        } catch (e) {
+          likeCount.textContent = '已点赞';
+        }
+      }
+    }
+
     // 分享文章
     function shareArticle() {
       const tip = document.getElementById('shareTip');
       tip.style.display = 'block';
       setTimeout(() => { tip.style.display = 'none'; }, 3000);
     }
+
+    // 阅读进度条
+    function updateReadingProgress() {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      document.getElementById('readingProgress').style.width = progress + '%';
+    }
+
+    // 返回顶部按钮显示/隐藏
+    function toggleBackToTop() {
+      const btn = document.getElementById('backToTop');
+      if (window.scrollY > 300) {
+        btn.classList.add('visible');
+      } else {
+        btn.classList.remove('visible');
+      }
+    }
+
+    // 滚动到顶部
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // 监听滚动事件
+    window.addEventListener('scroll', () => {
+      updateReadingProgress();
+      toggleBackToTop();
+    });
 
     // 页面加载时获取文章
     loadArticle();

@@ -429,6 +429,125 @@
       color: var(--primary);
       text-decoration: none;
     }
+
+    /* 热门文章排行 */
+    .hot-articles {
+      max-width: 800px;
+      margin: 0 auto 24px;
+      padding: 0 16px;
+    }
+    .hot-articles h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0 0 16px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .hot-list {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: 8px 0;
+      overflow: hidden;
+    }
+    .hot-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      text-decoration: none;
+      transition: background 0.2s;
+      border-bottom: 1px solid var(--border);
+    }
+    .hot-item:last-child {
+      border-bottom: none;
+    }
+    .hot-item:hover {
+      background: var(--bg);
+    }
+    .hot-rank {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .hot-rank.top1 {
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      color: #fff;
+    }
+    .hot-rank.top2 {
+      background: linear-gradient(135deg, #9ca3af, #6b7280);
+      color: #fff;
+    }
+    .hot-rank.top3 {
+      background: linear-gradient(135deg, #f97316, #ea580c);
+      color: #fff;
+    }
+    .hot-rank.normal {
+      background: var(--bg);
+      color: var(--text-muted);
+    }
+    .hot-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .hot-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 0 0 4px 0;
+      line-height: 1.4;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .hot-meta {
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      gap: 12px;
+    }
+    .hot-views {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    /* 返回顶部按钮 */
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 20px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #f97316, #ec4899);
+      color: #fff;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    .back-to-top:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(249, 115, 22, 0.4);
+    }
   </style>
 </head>
 <body>
@@ -583,6 +702,63 @@
     <div class="empty-state" id="emptyState" style="display:none;">
       <div class="icon">🔍</div>
       <p>没有找到相关文章，换个关键词试试吧</p>
+    </div>
+  </div>
+
+  <!-- 热门文章排行 -->
+  <div class="hot-articles">
+    <h2>🔥 热门文章</h2>
+    <div class="hot-list">
+      <a href="article.html?id=digital-7-methods" class="hot-item">
+        <span class="hot-rank top1">1</span>
+        <div class="hot-info">
+          <p class="hot-title">孩子沉迷手机怎么办？不要一刀切，试试这7个方法</p>
+          <div class="hot-meta">
+            <span>📱 手机沉迷</span>
+            <span class="hot-views">👁️ 3421 阅读</span>
+          </div>
+        </div>
+      </a>
+      <a href="article.html?id=special-bullying" class="hot-item">
+        <span class="hot-rank top2">2</span>
+        <div class="hot-info">
+          <p class="hot-title">孩子被校园欺凌怎么办？识别信号与应对方法</p>
+          <div class="hot-meta">
+            <span>⚠️ 特殊问题</span>
+            <span class="hot-views">👁️ 2345 阅读</span>
+          </div>
+        </div>
+      </a>
+      <a href="article.html?id=learning-5-reasons" class="hot-item">
+        <span class="hot-rank top3">3</span>
+        <div class="hot-info">
+          <p class="hot-title">孩子厌学怎么办？不是懒惰，是这5个深层原因</p>
+          <div class="hot-meta">
+            <span>📚 学习动力</span>
+            <span class="hot-views">👁️ 2156 阅读</span>
+          </div>
+        </div>
+      </a>
+      <a href="article.html?id=growth-eq-guide" class="hot-item">
+        <span class="hot-rank normal">4</span>
+        <div class="hot-info">
+          <p class="hot-title">如何培养高情商孩子？情绪智力培养全攻略</p>
+          <div class="hot-meta">
+            <span>🌳 心理成长</span>
+            <span class="hot-views">👁️ 1876 阅读</span>
+          </div>
+        </div>
+      </a>
+      <a href="article.html?id=adolescence-7-principles" class="hot-item">
+        <span class="hot-rank normal">5</span>
+        <div class="hot-info">
+          <p class="hot-title">孩子叛逆怎么办？应对叛逆期的7个原则</p>
+          <div class="hot-meta">
+            <span>🌱 青春期</span>
+            <span class="hot-views">👁️ 1567 阅读</span>
+          </div>
+        </div>
+      </a>
     </div>
   </div>
 
@@ -789,6 +965,25 @@
 
     // 页面加载时获取留言
     loadMessages();
+
+    // 返回顶部按钮
+    const backToTopBtn = document.createElement('button');
+    backToTopBtn.className = 'back-to-top';
+    backToTopBtn.id = 'backToTop';
+    backToTopBtn.innerHTML = '↑';
+    backToTopBtn.title = '返回顶部';
+    backToTopBtn.onclick = function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+    document.body.appendChild(backToTopBtn);
+
+    window.addEventListener('scroll', function() {
+      if (window.scrollY > 300) {
+        backToTopBtn.classList.add('visible');
+      } else {
+        backToTopBtn.classList.remove('visible');
+      }
+    });
   </script>
 </body>
 </html>
