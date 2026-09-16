@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>文章详情 - 林燕心语</title>
+  <meta name="description" content="林燕心语 - 杭州一线初中教师林燕的育儿心得分享，专注青春期心理与家庭教育。" />
+  <meta name="keywords" content="青春期心理,亲子沟通,家庭教育,学习动力,情绪管理,林燕心语" />
+  <meta property="og:title" content="林燕心语 - 青春期心理与家庭教育" />
+  <meta property="og:description" content="杭州一线初中教师林燕的育儿心得分享" />
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .article-detail {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 20px 16px 40px;
+    }
+    .article-header {
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .article-header h1 {
+      font-size: 22px;
+      line-height: 1.4;
+      color: var(--text-primary);
+      margin: 0 0 12px 0;
+      font-weight: 700;
+    }
+    .article-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .article-meta span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .article-category {
+      display: inline-block;
+      background: var(--primary);
+      color: #fff;
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .article-content {
+      font-size: 16px;
+      line-height: 1.8;
+      color: var(--text-secondary);
+    }
+    .article-content p {
+      margin: 0 0 16px 0;
+    }
+    .article-content h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 28px 0 12px 0;
+      padding-left: 10px;
+      border-left: 4px solid var(--primary);
+    }
+    .article-content strong {
+      color: var(--primary);
+      font-weight: 600;
+    }
+    .article-content blockquote {
+      margin: 16px 0;
+      padding: 12px 16px;
+      background: var(--bg-card);
+      border-left: 4px solid var(--primary);
+      border-radius: 0 8px 8px 0;
+      color: var(--text-secondary);
+      font-size: 15px;
+    }
+    .article-tags {
+      margin-top: 32px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .article-tags .tag {
+      background: var(--bg-card);
+      color: var(--text-muted);
+      padding: 4px 12px;
+      border-radius: 14px;
+      font-size: 12px;
+    }
+    .article-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+      padding: 16px;
+      background: var(--bg-card);
+      border-radius: var(--radius);
+    }
+    .action-btn {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: opacity 0.2s;
+    }
+    .action-btn:hover {
+      opacity: 0.85;
+    }
+    .action-btn.primary {
+      background: var(--primary);
+      color: #fff;
+    }
+    .action-btn.secondary {
+      background: var(--bg);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+    }
+    .related-articles {
+      margin-top: 32px;
+    }
+    .related-articles h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0 0 16px 0;
+    }
+    .related-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .related-item {
+      display: block;
+      padding: 14px 16px;
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .related-item:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+    .related-item .title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 0 0 6px 0;
+      line-height: 1.4;
+    }
+    .related-item .meta {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      cursor: pointer;
+    }
+    .back-btn:hover {
+      text-decoration: underline;
+    }
+    .loading, .error {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-muted);
+      font-size: 15px;
+    }
+    .loading .icon {
+      font-size: 40px;
+      margin-bottom: 12px;
+    }
+    .share-tip {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0,0,0,0.8);
+      color: #fff;
+      padding: 20px 30px;
+      border-radius: 12px;
+      font-size: 14px;
+      z-index: 1000;
+      text-align: center;
+    }
+    .share-tip .arrow {
+      font-size: 30px;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a href="index.html" class="topbar-logo">🌸 林燕心语</a>
+    <div class="search-box" style="flex:1;">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="搜索文章..." onkeydown="if(event.key==='Enter'){window.location.href='articles.html?search='+encodeURIComponent(this.value)}" />
+    </div>
+  </header>
+
+  <div class="article-detail" id="articleDetail">
+    <div class="loading">
+      <div class="icon">⏳</div>
+      <p>文章加载中...</p>
+    </div>
+  </div>
+
+  <div class="share-tip" id="shareTip">
+    <div class="arrow">↗️</div>
+    <p>点击右上角「...」<br/>分享给朋友或朋友圈</p>
+  </div>
+
+  <footer>
+    <p>🌸 林燕心语 · 青春期心理与家庭教育</p>
+    <p>杭州一线初中教师林燕的育儿心得分享</p>
+    <p>公众号：林燕心语 | 商务合作：linyanxinyu@163.com</p>
+    <p style="margin-top:8px;">
+      <a href="index.html">首页</a> ·
+      <a href="articles.html">文章合集</a>
+    </p>
+    <p style="margin-top:12px;color:var(--text-muted);">© 2026 林燕心语 版权所有</p>
+  </footer>
+
+  <script>
+    // 获取 URL 参数中的文章 ID
+    const urlParams = new URLSearchParams(window.location.search);
+    const articleId = urlParams.get('id');
+
+    // 分类名称映射
+    const categoryNames = {
+      communication: '亲子沟通',
+      adolescence: '青春期',
+      learning: '学习动力',
+      emotion: '情绪管理',
+      digital: '手机沉迷',
+      family: '家庭教育',
+      special: '特殊问题',
+      growth: '心理成长'
+    };
+
+    // 加载文章
+    async function loadArticle() {
+      const container = document.getElementById('articleDetail');
+
+      if (!articleId) {
+        container.innerHTML = '<div class="error"><div class="icon">❌</div><p>未指定文章</p><a href="articles.html" class="back-btn">← 返回文章列表</a></div>';
+        return;
+      }
+
+      try {
+        const res = await fetch('data/articles.json');
+        const data = await res.json();
+        const article = data.articles.find(a => a.id === articleId);
+
+        if (!article) {
+          container.innerHTML = '<div class="error"><div class="icon">❌</div><p>文章不存在</p><a href="articles.html" class="back-btn">← 返回文章列表</a></div>';
+          return;
+        }
+
+        // 更新页面标题和 SEO
+        document.title = article.title + ' - 林燕心语';
+        document.querySelector('meta[name="description"]').content = article.excerpt;
+        document.querySelector('meta[property="og:title"]').content = article.title;
+        document.querySelector('meta[property="og:description"]').content = article.excerpt;
+
+        // 相关文章（同分类的其他文章）
+        const related = data.articles
+          .filter(a => a.category === article.category && a.id !== article.id)
+          .slice(0, 3);
+
+        // 渲染文章
+        container.innerHTML = `
+          <a href="javascript:history.back()" class="back-btn">← 返回</a>
+          <div class="article-header">
+            <h1>${escapeHtml(article.title)}</h1>
+            <div class="article-meta">
+              <span class="article-category">${article.categoryName || categoryNames[article.category] || ''}</span>
+              <span>📅 ${article.date}</span>
+              <span>⏱️ ${article.readTime}</span>
+              <span>👁️ ${article.views} 阅读</span>
+            </div>
+          </div>
+          <div class="article-content">
+            ${article.content}
+          </div>
+          <div class="article-tags">
+            ${(article.tags || []).map(tag => `<span class="tag">#${escapeHtml(tag)}</span>`).join('')}
+          </div>
+          <div class="article-actions">
+            <button class="action-btn primary" onclick="shareArticle()">📤 分享文章</button>
+            <button class="action-btn secondary" onclick="window.location.href='articles.html'">📚 更多文章</button>
+          </div>
+          ${related.length > 0 ? `
+          <div class="related-articles">
+            <h3>📖 相关文章</h3>
+            <div class="related-list">
+              ${related.map(a => `
+                <a href="article.html?id=${a.id}" class="related-item">
+                  <p class="title">${escapeHtml(a.title)}</p>
+                  <p class="meta">${a.date} · ${a.readTime} · ${a.views} 阅读</p>
+                </a>
+              `).join('')}
+            </div>
+          </div>
+          ` : ''}
+        `;
+      } catch (e) {
+        console.error('加载文章失败:', e);
+        container.innerHTML = '<div class="error"><div class="icon">❌</div><p>文章加载失败，请稍后再试</p><a href="articles.html" class="back-btn">← 返回文章列表</a></div>';
+      }
+    }
+
+    // HTML 转义
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // 分享文章
+    function shareArticle() {
+      const tip = document.getElementById('shareTip');
+      tip.style.display = 'block';
+      setTimeout(() => { tip.style.display = 'none'; }, 3000);
+    }
+
+    // 页面加载时获取文章
+    loadArticle();
+  </script>
+</body>
+</html>

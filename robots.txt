@@ -1,11 +1,11 @@
-# iHangzhou 杭州生活助手
-# https://ihangzhou.net/
+# 林燕心语 · 青春期心理与家庭教育
+# https://linyanxinyu-helper-9qgocekfd-asincc-4762s-projects.vercel.app/
 
 User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://ihangzhou.net/sitemap.xml
+Sitemap: https://linyanxinyu-helper-9qgocekfd-asincc-4762s-projects.vercel.app/sitemap.xml
 
 # 爬虫指引
 Crawl-delay: 1
