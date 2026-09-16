@@ -357,8 +357,10 @@
       align-items: center;
       background: rgba(255,255,255,0.2);
       border-radius: 20px;
-      padding: 6px 12px;
+      padding: 8px 14px;
       margin: 0 8px;
+      height: 36px;
+      box-sizing: border-box;
     }
     .search-box input {
       flex: 1;
@@ -366,15 +368,25 @@
       border: none;
       outline: none;
       color: #fff;
-      font-size: 13px;
-      placeholder: #fff;
+      font-size: 14px;
+      font-family: inherit;
+      line-height: 1.4;
+      padding: 0;
+      margin: 0;
+      width: 100%;
     }
     .search-box input::placeholder {
-      color: rgba(255,255,255,0.7);
+      color: rgba(255,255,255,0.75);
+      font-size: 14px;
+      font-family: inherit;
+    }
+    .search-box input:focus {
+      outline: none;
     }
     .search-box .search-icon {
       font-size: 14px;
-      margin-right: 6px;
+      margin-right: 8px;
+      flex-shrink: 0;
     }
     .topbar-logo {
       color: #fff;
