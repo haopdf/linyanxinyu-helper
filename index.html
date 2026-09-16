@@ -549,40 +549,6 @@
       box-shadow: 0 6px 16px rgba(249, 115, 22, 0.4);
     }
 
-    /* 浮动留言按钮 */
-    .float-message-btn {
-      position: fixed;
-      right: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      background: linear-gradient(135deg, #f97316, #ec4899);
-      color: #fff;
-      border: none;
-      border-radius: 12px 0 0 12px;
-      padding: 16px 10px;
-      cursor: pointer;
-      box-shadow: -4px 4px 12px rgba(249, 115, 22, 0.3);
-      z-index: 998;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.3s ease;
-      writing-mode: vertical-rl;
-      text-orientation: upright;
-      font-size: 14px;
-      font-weight: 600;
-      letter-spacing: 2px;
-    }
-    .float-message-btn:hover {
-      padding-left: 16px;
-      box-shadow: -6px 6px 16px rgba(249, 115, 22, 0.4);
-    }
-    .float-message-btn .icon {
-      font-size: 20px;
-      writing-mode: horizontal-tb;
-    }
-
     /* 留言弹窗 */
     .message-modal-overlay {
       position: fixed;
@@ -985,8 +951,7 @@
     <p>公众号：林燕心语 | 商务合作：linyanxinyu@163.com</p>
     <p style="margin-top:8px;">
       <a href="articles.html">文章合集</a> · 
-      <a href="#">关于我</a> · 
-      <a href="#">联系我们</a>
+      <a href="#" onclick="openMessageModal(); return false;">💬 联系我们/留言</a>
     </p>
     <p style="margin-top:12px;color:var(--text-muted);">© 2026 林燕心语 版权所有</p>
   </footer>
@@ -1165,17 +1130,6 @@
         backToTopBtn.classList.remove('visible');
       }
     });
-
-    // 浮动留言按钮
-    const floatMsgBtn = document.createElement('button');
-    floatMsgBtn.className = 'float-message-btn';
-    floatMsgBtn.id = 'floatMsgBtn';
-    floatMsgBtn.innerHTML = '<span class="icon">💬</span><span>留言</span>';
-    floatMsgBtn.title = '我要留言';
-    floatMsgBtn.onclick = function() {
-      openMessageModal();
-    };
-    document.body.appendChild(floatMsgBtn);
 
     // 留言弹窗
     const messageModalOverlay = document.createElement('div');
