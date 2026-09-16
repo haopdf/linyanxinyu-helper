@@ -479,15 +479,15 @@
       emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
     }
 
-    // 分类点击事件
+    // 分类点击跳转到独立分类页面
     categoryItems.forEach(item => {
       item.addEventListener('click', () => {
-        categoryItems.forEach(i => i.classList.remove('active'));
-        item.classList.add('active');
-        currentCategory = item.dataset.cat;
-        filterArticles();
-        // 滚动到文章列表
-        document.getElementById('articleList').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const cat = item.dataset.cat;
+        if (cat === 'all') {
+          window.location.href = 'articles.html';
+        } else {
+          window.location.href = `articles.html?cat=${cat}`;
+        }
       });
     });
 
