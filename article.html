@@ -10,11 +10,8 @@
   <meta property="og:description" content="杭州一线初中教师林燕的育儿心得分享" />
   <meta property="og:type" content="article" />
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/common.css?v=20260916" />
   <style>
-    body {
-      padding-bottom: 80px;
-      min-height: auto;
-    }
     /* 阅读进度条 */
     .reading-progress {
       position: fixed;
@@ -647,18 +644,6 @@
   <!-- 阅读进度条 -->
   <div class="reading-progress" id="readingProgress"></div>
 
-  <header class="topbar">
-    <a href="index.html" class="topbar-logo">🌸 林燕心语</a>
-    <div class="search-wrapper">
-      <div class="search-box" style="flex:1;">
-        <span class="search-icon">🔍</span>
-        <input type="text" id="searchInput" placeholder="搜索文章、关键词..." autocomplete="off" />
-        <span class="search-clear" id="searchClear" style="display:none;">×</span>
-      </div>
-      <div class="search-suggestions" id="searchSuggestions"></div>
-    </div>
-  </header>
-
   <div class="article-detail" id="articleDetail">
     <div class="loading">
       <div class="icon">⏳</div>
@@ -674,18 +659,13 @@
     <p>点击右上角「...」<br/>分享给朋友或朋友圈</p>
   </div>
 
-  <footer>
-    <p>🌸 林燕心语 · 青春期心理与家庭教育</p>
-    <p>杭州一线初中教师林燕的育儿心得分享</p>
-    <p>公众号：林燕心语 | 商务合作：linyanxinyu@163.com</p>
-    <p style="margin-top:8px;">
-      <a href="articles.html">文章合集</a> · 
-      <a href="#" onclick="openMessageModal(); return false;">💬 联系我们/留言</a>
-    </p>
-    <p style="margin-top:12px;color:var(--text-muted);">© 2026 林燕心语 版权所有</p>
-  </footer>
-
   <script>
+    // 自定义页脚链接
+    window.footerCustomLinks = `
+      <a href="articles.html">文章合集</a> ·
+      <a href="#" onclick="openMessageModal(); return false;">💬 联系我们/留言</a>
+    `;
+
     // 获取 URL 参数中的文章 ID
     const urlParams = new URLSearchParams(window.location.search);
     const articleId = urlParams.get('id');
@@ -1203,5 +1183,6 @@
       }
     });
   </script>
+  <script src="js/common.js?v=20260916"></script>
 </body>
 </html>

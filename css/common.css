@@ -1,0 +1,239 @@
+/* ============================================
+   林燕心语网站 - 公共样式模块
+   所有页面共用的头部、搜索、页脚、返回顶部等样式
+   修改此文件，所有页面自动更新
+   ============================================ */
+
+/* ---------- Body 覆盖 ---------- */
+body {
+  padding-bottom: 80px;
+  min-height: auto;
+}
+
+/* ---------- 顶部导航栏 ---------- */
+.topbar {
+  background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(249, 115, 22, 0.15);
+}
+
+.topbar-logo {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 4px 0;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ---------- 搜索框 ---------- */
+.search-wrapper {
+  position: relative;
+  flex: 1;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  background: rgba(255,255,255,0.2);
+  border-radius: 20px;
+  padding: 8px 14px;
+  margin: 0 8px;
+  height: 36px;
+  box-sizing: border-box;
+}
+
+.search-box input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 14px;
+  font-family: inherit;
+  line-height: 1.4;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.search-box input::placeholder {
+  color: rgba(255,255,255,0.75);
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.search-box input:focus {
+  outline: none;
+}
+
+.search-box .search-icon {
+  font-size: 14px;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.search-box .search-clear {
+  font-size: 18px;
+  color: rgba(255,255,255,0.8);
+  cursor: pointer;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  transition: all 0.2s;
+  line-height: 1;
+}
+
+.search-box .search-clear:hover {
+  background: rgba(255,255,255,0.35);
+  color: #fff;
+}
+
+/* ---------- 搜索建议下拉列表 ---------- */
+.search-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 8px;
+  right: 8px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  z-index: 1000;
+  display: none;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.search-suggestions.active {
+  display: block;
+}
+
+.search-suggestion-item {
+  padding: 10px 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid #f0f0f0;
+  transition: background 0.15s;
+}
+
+.search-suggestion-item:last-child {
+  border-bottom: none;
+}
+
+.search-suggestion-item:hover,
+.search-suggestion-item.active {
+  background: #fef3c7;
+}
+
+.search-suggestion-item .icon {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.search-suggestion-item .text {
+  flex: 1;
+  font-size: 14px;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.search-suggestion-item .type {
+  font-size: 11px;
+  color: #999;
+  flex-shrink: 0;
+  background: #f5f5f5;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.search-suggestion-item .highlight {
+  color: #f97316;
+  font-weight: 600;
+}
+
+.search-suggestions .empty {
+  padding: 16px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+/* ---------- 页脚 ---------- */
+footer {
+  background: var(--bg-alt);
+  padding: 24px 16px 32px;
+  text-align: center;
+  border-top: 1px solid var(--border-light);
+}
+
+footer p {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 4px 0;
+  line-height: 1.6;
+}
+
+footer a {
+  color: var(--primary);
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+footer a:hover {
+  background: var(--primary);
+  color: #fff;
+  text-decoration: none;
+}
+
+/* ---------- 返回顶部按钮 ---------- */
+.back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 20px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f97316, #ec4899);
+  color: #fff;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.back-to-top:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(249, 115, 22, 0.4);
+}
