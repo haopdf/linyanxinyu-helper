@@ -13,6 +13,10 @@
   <link rel="stylesheet" href="css/style.css?v=20260915">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌸</text></svg>">
   <style>
+    body {
+      padding-bottom: 80px;
+      min-height: auto;
+    }
     .page-header {
       background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
       color: #fff;
@@ -139,6 +143,29 @@
       margin-right: 8px;
       flex-shrink: 0;
     }
+    .search-box .search-clear {
+      font-size: 18px;
+      color: rgba(255,255,255,0.8);
+      cursor: pointer;
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      transition: all 0.2s;
+      line-height: 1;
+    }
+    .search-box .search-clear:hover {
+      background: rgba(255,255,255,0.35);
+      color: #fff;
+    }
+    .search-wrapper {
+      position: relative;
+      flex: 1;
+    }
     .topbar-logo {
       color: #fff;
       text-decoration: none;
@@ -160,6 +187,98 @@
     .empty-state p {
       font-size: 14px;
       margin: 0;
+    }
+
+    /* 页脚样式 */
+    footer {
+      background: var(--bg-alt);
+      padding: 24px 16px 32px;
+      text-align: center;
+      border-top: 1px solid var(--border-light);
+    }
+    footer p {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin: 4px 0;
+      line-height: 1.6;
+    }
+    footer a {
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+    footer a:hover {
+      background: var(--primary);
+      color: #fff;
+      text-decoration: none;
+    }
+
+    /* 搜索建议下拉列表 */
+    .search-suggestions {
+      position: absolute;
+      top: 100%;
+      left: 8px;
+      right: 8px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      z-index: 1000;
+      display: none;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+    .search-suggestions.active {
+      display: block;
+    }
+    .search-suggestion-item {
+      padding: 10px 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid #f0f0f0;
+      transition: background 0.15s;
+    }
+    .search-suggestion-item:last-child {
+      border-bottom: none;
+    }
+    .search-suggestion-item:hover,
+    .search-suggestion-item.active {
+      background: #fef3c7;
+    }
+    .search-suggestion-item .icon {
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    .search-suggestion-item .text {
+      flex: 1;
+      font-size: 14px;
+      color: #333;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .search-suggestion-item .type {
+      font-size: 11px;
+      color: #999;
+      flex-shrink: 0;
+      background: #f5f5f5;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .search-suggestion-item .highlight {
+      color: #f97316;
+      font-weight: 600;
+    }
+    .search-suggestions .empty {
+      padding: 16px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
     }
 
     /* 返回顶部按钮 */
@@ -197,9 +316,13 @@
 <body>
   <header class="topbar">
     <a href="index.html" class="topbar-logo">🌸 林燕心语</a>
-    <div class="search-box" style="flex:1;">
-      <span class="search-icon">🔍</span>
-      <input type="text" id="searchInput" placeholder="搜索文章..." />
+    <div class="search-wrapper">
+      <div class="search-box" style="flex:1;">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="搜索文章、关键词..." autocomplete="off" />
+        <span class="search-clear" id="searchClear" style="display:none;">×</span>
+      </div>
+      <div class="search-suggestions" id="searchSuggestions"></div>
     </div>
   </header>
 
@@ -364,6 +487,161 @@
     searchInput.addEventListener('input', (e) => {
       currentSearch = e.target.value.trim();
       filterArticles();
+      showSearchSuggestions(currentSearch);
+      // 显示/隐藏清除按钮
+      const clearBtn = document.getElementById('searchClear');
+      if (clearBtn) {
+        clearBtn.style.display = currentSearch ? 'flex' : 'none';
+      }
+    });
+
+    // 清除按钮点击事件
+    const searchClearBtn = document.getElementById('searchClear');
+    if (searchClearBtn) {
+      searchClearBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        currentSearch = '';
+        filterArticles();
+        hideSearchSuggestions();
+        searchClearBtn.style.display = 'none';
+        searchInput.focus();
+      });
+    }
+
+    // 热门关键词
+    const hotKeywords = ['青春期', '厌学', '亲子沟通', '手机沉迷', '学习动力', '情绪管理', '叛逆', '考试焦虑', '自卑', '早恋', '家庭教育', '父母关系', '校园欺凌', '抑郁', '高情商', '自我成长'];
+
+    // 文章标题列表
+    let articleTitles = [];
+    document.querySelectorAll('.article-card').forEach(card => {
+      const title = card.querySelector('.title')?.textContent || '';
+      const cat = card.dataset.cat || '';
+      if (title) articleTitles.push({ title, category: cat });
+    });
+
+    const categoryNames = {
+      communication: '亲子沟通', adolescence: '青春期', learning: '学习动力',
+      emotion: '情绪管理', digital: '手机沉迷', family: '家庭教育',
+      special: '特殊问题', growth: '心理成长'
+    };
+
+    let activeSuggestionIndex = -1;
+
+    // 显示搜索建议
+    function showSearchSuggestions(query) {
+      const suggestionsEl = document.getElementById('searchSuggestions');
+      if (!query) {
+        suggestionsEl.classList.remove('active');
+        suggestionsEl.innerHTML = '';
+        activeSuggestionIndex = -1;
+        return;
+      }
+
+      const queryLower = query.toLowerCase();
+      const suggestions = [];
+
+      // 匹配热门关键词
+      hotKeywords.forEach(kw => {
+        if (kw.toLowerCase().includes(queryLower)) {
+          suggestions.push({ type: '关键词', text: kw, icon: '🔥' });
+        }
+      });
+
+      // 匹配文章标题
+      articleTitles.forEach(article => {
+        if (article.title.toLowerCase().includes(queryLower)) {
+          suggestions.push({ type: categoryNames[article.category] || '文章', text: article.title, icon: '📄' });
+        }
+      });
+
+      // 去重并限制数量
+      const uniqueSuggestions = [];
+      const seen = new Set();
+      suggestions.forEach(s => {
+        if (!seen.has(s.text)) {
+          seen.add(s.text);
+          uniqueSuggestions.push(s);
+        }
+      });
+
+      if (uniqueSuggestions.length === 0) {
+        suggestionsEl.innerHTML = '<div class="empty">没有找到相关内容</div>';
+      } else {
+        suggestionsEl.innerHTML = uniqueSuggestions.slice(0, 8).map((s, i) => `
+          <div class="search-suggestion-item ${i === activeSuggestionIndex ? 'active' : ''}" data-index="${i}" data-text="${s.text}">
+            <span class="icon">${s.icon}</span>
+            <span class="text">${highlightMatch(s.text, query)}</span>
+            <span class="type">${s.type}</span>
+          </div>
+        `).join('');
+
+        // 绑定点击事件
+        suggestionsEl.querySelectorAll('.search-suggestion-item').forEach(item => {
+          item.addEventListener('click', () => {
+            const text = item.dataset.text;
+            searchInput.value = text;
+            currentSearch = text;
+            filterArticles();
+            hideSearchSuggestions();
+            document.getElementById('searchClear').style.display = 'flex';
+          });
+        });
+      }
+
+      suggestionsEl.classList.add('active');
+    }
+
+    // 隐藏搜索建议
+    function hideSearchSuggestions() {
+      const suggestionsEl = document.getElementById('searchSuggestions');
+      suggestionsEl.classList.remove('active');
+      activeSuggestionIndex = -1;
+    }
+
+    // 高亮匹配文字
+    function highlightMatch(text, query) {
+      const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+      return text.replace(regex, '<span class="highlight">$1</span>');
+    }
+
+    // 键盘导航
+    searchInput.addEventListener('keydown', (e) => {
+      const suggestionsEl = document.getElementById('searchSuggestions');
+      const items = suggestionsEl.querySelectorAll('.search-suggestion-item');
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (items.length > 0) {
+          activeSuggestionIndex = (activeSuggestionIndex + 1) % items.length;
+          updateActiveSuggestion(items);
+        }
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (items.length > 0) {
+          activeSuggestionIndex = activeSuggestionIndex <= 0 ? items.length - 1 : activeSuggestionIndex - 1;
+          updateActiveSuggestion(items);
+        }
+      } else if (e.key === 'Enter') {
+        if (activeSuggestionIndex >= 0 && items[activeSuggestionIndex]) {
+          e.preventDefault();
+          items[activeSuggestionIndex].click();
+        }
+      } else if (e.key === 'Escape') {
+        hideSearchSuggestions();
+      }
+    });
+
+    function updateActiveSuggestion(items) {
+      items.forEach((item, i) => {
+        item.classList.toggle('active', i === activeSuggestionIndex);
+      });
+    }
+
+    // 点击页面其他地方关闭搜索建议
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.search-wrapper')) {
+        hideSearchSuggestions();
+      }
     });
 
     // 页面加载时读取 URL 参数
@@ -400,5 +678,16 @@
       }
     });
   </script>
+
+  <footer>
+    <p>🌸 林燕心语 · 青春期心理与家庭教育</p>
+    <p>杭州一线初中教师林燕的育儿心得分享</p>
+    <p>公众号：林燕心语 | 商务合作：linyanxinyu@163.com</p>
+    <p style="margin-top:8px;">
+      <a href="articles.html">文章合集</a> · 
+      <a href="index.html">🏠 返回首页</a>
+    </p>
+    <p style="margin-top:12px;color:var(--text-muted);">© 2026 林燕心语 版权所有</p>
+  </footer>
 </body>
 </html>
