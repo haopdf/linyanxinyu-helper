@@ -99,6 +99,37 @@
       font-size: 12px;
       color: var(--text-muted);
     }
+    .search-box {
+      display: flex;
+      align-items: center;
+      background: rgba(255,255,255,0.2);
+      border-radius: 20px;
+      padding: 6px 12px;
+      margin: 0 8px;
+    }
+    .search-box input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #fff;
+      font-size: 13px;
+    }
+    .search-box input::placeholder {
+      color: rgba(255,255,255,0.7);
+    }
+    .search-box .search-icon {
+      font-size: 14px;
+      margin-right: 6px;
+    }
+    .topbar-logo {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 15px;
+      padding: 4px 8px;
+      white-space: nowrap;
+    }
     .empty-state {
       text-align: center;
       padding: 60px 20px;
@@ -116,9 +147,11 @@
 </head>
 <body>
   <header class="topbar">
-    <a href="index.html" class="topbar-back" style="color:#fff;text-decoration:none;font-size:20px;padding:4px 8px;">‹</a>
-    <div class="topbar-city"><span>📝 文章合集</span></div>
-    <div class="topbar-search" style="flex:1;"></div>
+    <a href="index.html" class="topbar-logo">🌸 林燕心语</a>
+    <div class="search-box" style="flex:1;">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="搜索文章..." />
+    </div>
   </header>
 
   <div class="page-header">
@@ -222,51 +255,81 @@
     const filterBtns = document.querySelectorAll('.filter-btn');
     const articles = document.querySelectorAll('.article-card');
     const emptyState = document.getElementById('emptyState');
+    const searchInput = document.getElementById('searchInput');
 
-    function filterByCategory(cat) {
+    let currentCategory = 'all';
+    let currentSearch = '';
+
+    function filterArticles() {
       filterBtns.forEach(b => b.classList.remove('active'));
-      const activeBtn = document.querySelector(`.filter-btn[data-cat="${cat}"]`);
+      const activeBtn = document.querySelector(`.filter-btn[data-cat="${currentCategory}"]`);
       if (activeBtn) activeBtn.classList.add('active');
 
       let visibleCount = 0;
       articles.forEach(article => {
-        if (cat === 'all' || article.dataset.cat === cat) {
+        const cat = article.dataset.cat;
+        const title = article.querySelector('.title')?.textContent || '';
+        const desc = article.querySelector('.desc')?.textContent || '';
+        const searchText = (title + ' ' + desc).toLowerCase();
+
+        const matchCategory = currentCategory === 'all' || cat === currentCategory;
+        const matchSearch = currentSearch === '' || searchText.includes(currentSearch.toLowerCase());
+
+        if (matchCategory && matchSearch) {
           article.style.display = 'block';
           visibleCount++;
         } else {
           article.style.display = 'none';
         }
       });
+
+      // 更新空状态提示
+      const emptyIcon = emptyState.querySelector('.icon');
+      const emptyText = emptyState.querySelector('p');
+      if (currentSearch && visibleCount === 0) {
+        emptyIcon.textContent = '🔍';
+        emptyText.textContent = '没有找到相关文章，换个关键词试试吧';
+      } else {
+        emptyIcon.textContent = '📭';
+        emptyText.textContent = '该分类下暂无文章';
+      }
       emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
     }
 
     filterBtns.forEach(btn => {
       btn.addEventListener('click', () => {
-        const cat = btn.dataset.cat;
-        filterByCategory(cat);
+        currentCategory = btn.dataset.cat;
+        filterArticles();
         // 更新 URL 参数（不刷新页面）
         const url = new URL(window.location);
-        if (cat === 'all') {
+        if (currentCategory === 'all') {
           url.searchParams.delete('cat');
         } else {
-          url.searchParams.set('cat', cat);
+          url.searchParams.set('cat', currentCategory);
         }
         window.history.pushState({}, '', url);
       });
+    });
+
+    // 搜索事件
+    searchInput.addEventListener('input', (e) => {
+      currentSearch = e.target.value.trim();
+      filterArticles();
     });
 
     // 页面加载时读取 URL 参数
     const urlParams = new URLSearchParams(window.location.search);
     const catFromUrl = urlParams.get('cat');
     if (catFromUrl) {
-      filterByCategory(catFromUrl);
+      currentCategory = catFromUrl;
+      filterArticles();
     }
 
     // 监听浏览器前进/后退
     window.addEventListener('popstate', () => {
       const params = new URLSearchParams(window.location.search);
-      const cat = params.get('cat') || 'all';
-      filterByCategory(cat);
+      currentCategory = params.get('cat') || 'all';
+      filterArticles();
     });
   </script>
 </body>
