@@ -286,9 +286,17 @@ function initBackToTop() {
   });
 }
 
+// ---------- 立即渲染头部（在脚本加载时执行，确保后续代码能找到 searchInput） ----------
+(function() {
+  // 如果页面没有手动渲染头部，则立即渲染
+  if (!document.querySelector('.topbar') && document.body) {
+    renderHeader();
+  }
+})();
+
 // ---------- 页面加载完成后自动初始化 ----------
 document.addEventListener('DOMContentLoaded', function() {
-  // 如果页面没有手动渲染头部，则自动渲染
+  // 如果页面没有手动渲染头部，则自动渲染（兜底）
   if (!document.querySelector('.topbar')) {
     renderHeader();
   }
