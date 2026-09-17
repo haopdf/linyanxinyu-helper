@@ -101,7 +101,7 @@ function renderFooter(extraLinks = '') {
 }
 
 // ---------- 搜索功能初始化 ----------
-let activeSuggestionIndex = -1;
+let commonActiveIndex = -1;
 
 function initSearch() {
   const searchInput = document.getElementById('searchInput');
@@ -140,19 +140,19 @@ function initSearch() {
     if (e.key === 'ArrowDown') {
       e.preventDefault();
       if (items.length > 0) {
-        activeSuggestionIndex = (activeSuggestionIndex + 1) % items.length;
+        commonActiveIndex = (commonActiveIndex + 1) % items.length;
         updateActiveSuggestion(items);
       }
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
       if (items.length > 0) {
-        activeSuggestionIndex = activeSuggestionIndex <= 0 ? items.length - 1 : activeSuggestionIndex - 1;
+        commonActiveIndex = commonActiveIndex <= 0 ? items.length - 1 : commonActiveIndex - 1;
         updateActiveSuggestion(items);
       }
     } else if (e.key === 'Enter') {
-      if (activeSuggestionIndex >= 0 && items[activeSuggestionIndex]) {
+      if (commonActiveIndex >= 0 && items[commonActiveIndex]) {
         e.preventDefault();
-        items[activeSuggestionIndex].click();
+        items[commonActiveIndex].click();
       }
     } else if (e.key === 'Escape') {
       hideSearchSuggestions();
@@ -175,7 +175,7 @@ function showSearchSuggestions(query) {
   if (!query) {
     suggestionsEl.classList.remove('active');
     suggestionsEl.innerHTML = '';
-    activeSuggestionIndex = -1;
+    commonActiveIndex = -1;
     return;
   }
 
@@ -217,7 +217,7 @@ function showSearchSuggestions(query) {
     suggestionsEl.innerHTML = '<div class="empty">没有找到相关内容</div>';
   } else {
     suggestionsEl.innerHTML = uniqueSuggestions.slice(0, 8).map((s, i) => `
-      <div class="search-suggestion-item ${i === activeSuggestionIndex ? 'active' : ''}" data-index="${i}" data-text="${s.text}">
+      <div class="search-suggestion-item ${i === commonActiveIndex ? 'active' : ''}" data-index="${i}" data-text="${s.text}">
         <span class="icon">${s.icon}</span>
         <span class="text">${highlightMatch(s.text, query)}</span>
         <span class="type">${s.type}</span>
@@ -249,7 +249,7 @@ function hideSearchSuggestions() {
   if (suggestionsEl) {
     suggestionsEl.classList.remove('active');
   }
-  activeSuggestionIndex = -1;
+  commonActiveIndex = -1;
 }
 
 // ---------- 高亮匹配文字 ----------
@@ -261,7 +261,7 @@ function highlightMatch(text, query) {
 // ---------- 更新激活的建议项 ----------
 function updateActiveSuggestion(items) {
   items.forEach((item, i) => {
-    item.classList.toggle('active', i === activeSuggestionIndex);
+    item.classList.toggle('active', i === commonActiveIndex);
   });
 }
 
